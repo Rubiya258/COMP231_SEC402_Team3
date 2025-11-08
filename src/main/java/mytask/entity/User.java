@@ -1,6 +1,15 @@
 package mytask.entity;
 
-import jakarta.persistence.*;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
@@ -26,7 +35,10 @@ public class User {
 
     @NotBlank
     private String phone_number;
-
+    
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reminder> reminders;
+    
     public int getUser_id() {
         return user_id;
     }
@@ -66,4 +78,12 @@ public class User {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
+    public List<Reminder> getReminders() {
+        return reminders;
+    }
+
+    public void setReminders(List<Reminder> reminders) {
+        this.reminders = reminders;
+    }
+}
 }
