@@ -1,0 +1,30 @@
+package mytask.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+
+import mytask.entity.Reminder;
+import mytask.repository.ReminderRepository;
+
+@Service
+public class NotificationService {
+	 @Autowired
+	    private ReminderRepository reminderRepository;
+
+	    @Scheduled(fixedRate = 60000) 
+	    public void checkNotifications() {
+	        LocalDateTime now = LocalDateTime.now();
+	        List<Reminder> reminders = reminderRepository.findAllByNotificationTimeBeforeAndCompletedFalse(now);
+
+	        for (Reminder reminder : reminders) {
+	            System.out.println("Notification: " + reminder.getTitle() + " - " + reminder.getDescription());
+	            
+	            reminder.setCompleted(true);
+	            reminderRepository.save(reminder);
+	        }
+	    }
+}
