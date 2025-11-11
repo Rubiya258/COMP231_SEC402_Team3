@@ -86,4 +86,4 @@ public class User {
         this.reminders = reminders;
     }
 }
-}
+

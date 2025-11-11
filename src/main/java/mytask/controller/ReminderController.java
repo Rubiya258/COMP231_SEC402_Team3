@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import mytask.service.NotificationService;
+
 
 import mytask.entity.Reminder;
-import mytask.entity.User;
-import mytask.repository.UserRepository;
 import mytask.service.ReminderService;
 
 @RestController
@@ -49,5 +49,14 @@ public class ReminderController {
     public String deleteReminder(@PathVariable int id) {
         reminderService.deleteReminder(id);
         return "Reminder deleted successfully!";
+    }
+    
+    @Autowired
+    private NotificationService notificationService;
+
+    @GetMapping("/run-notifications")
+    public String runNotificationsNow() {
+        int processed = notificationService.runDueReminderCycle();
+        return "Processed " + processed + " due reminders.";
     }
 }

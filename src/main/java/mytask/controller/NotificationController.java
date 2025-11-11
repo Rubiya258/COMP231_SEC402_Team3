@@ -28,6 +28,6 @@ public class NotificationController {
 
     @GetMapping("/reminder/{reminderId}")
     public List<Notification> getNotificationsByReminder(@PathVariable Long reminderId) {
-        return notificationRepository.findByReminderId(reminderId);
+        return notificationRepository.findByReminder_ReminderId(reminderId);
     }
 }

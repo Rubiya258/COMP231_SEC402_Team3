@@ -28,10 +28,11 @@ public class Reminder {
 
 	    private String description;
 
-	    @Column(name = "notification_time")
+	    @Column(name = "reminder_time")
 	    private LocalDateTime notificationTime;
 
-	    @Column(name = "is_completed", nullable = false)
+
+	    @Column(name = "completed")
 	    private boolean completed = false;
 
 	    // Getters and Setters
