@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import mytask.service.NotificationService;
 
-
 import mytask.entity.Reminder;
 import mytask.service.ReminderService;
+import mytask.service.NotificationService;
 
 @RestController
 @RequestMapping("/api/reminders")
@@ -26,17 +26,21 @@ public class ReminderController {
 	@Autowired
     private ReminderService reminderService;
 
-    
     @PostMapping("/add")
     public Reminder createReminder(@RequestBody Reminder reminder) {
         return reminderService.saveReminder(reminder);
     }
 
-    
     @GetMapping("/all")
     public List<Reminder> getAllReminders() {
         return reminderService.getAllReminders();
     }
+
+	@GetMapping("/{id}")
+    public ResponseEntity<Reminder> getReminderById(@PathVariable int id) {
+        Optional<Reminder> reminder = reminderService.getReminderById(id);
+        return reminder.map(ResponseEntity::ok)
+                       .orElseGet(() -> ResponseEntity.notFound().build());
 
    
     @PutMapping("/update/{id}")
@@ -44,7 +48,6 @@ public class ReminderController {
         return reminderService.updateReminder(id, reminder);
     }
 
-   
     @DeleteMapping("/delete/{id}")
     public String deleteReminder(@PathVariable int id) {
         reminderService.deleteReminder(id);
