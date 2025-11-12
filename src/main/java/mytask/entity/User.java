@@ -13,6 +13,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -36,7 +38,8 @@ public class User {
     @NotBlank
     private String phone_number;
     
-   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Reminder> reminders;
     
     public int getUser_id() {
@@ -78,6 +81,7 @@ public class User {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
+    
     public List<Reminder> getReminders() {
         return reminders;
     }
