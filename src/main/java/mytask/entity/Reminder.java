@@ -12,6 +12,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name = "reminders")
 public class Reminder {
@@ -21,6 +23,7 @@ public class Reminder {
 
 	    @ManyToOne
 	    @JoinColumn(name = "user_id", nullable = false)
+		@JsonBackReference
 	    private User user;
 
 	    @NotBlank
@@ -30,7 +33,6 @@ public class Reminder {
 
 	    @Column(name = "reminder_time")
 	    private LocalDateTime notificationTime;
-
 
 	    @Column(name = "completed")
 	    private boolean completed = false;
