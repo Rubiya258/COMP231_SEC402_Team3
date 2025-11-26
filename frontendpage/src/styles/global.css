@@ -10,6 +10,20 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+.app-logo {
+  width: 120px;
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+.page-illustration {
+  width: 260px;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto 20px auto;
+}
+
+
 /* Logo */
 .logo {
   font-size: 1.5rem;
