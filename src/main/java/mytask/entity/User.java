@@ -1,7 +1,6 @@
 package mytask.entity;
 
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,15 +12,13 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table(name = "users")
 public class User {
-
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int user_id;
+	@Column(name = "user_id")
+	private int userId;
 
     @NotBlank
     @Column(unique = true)
@@ -37,18 +34,11 @@ public class User {
 
     @NotBlank
     private String phone_number;
-    
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
     private List<Reminder> reminders;
     
-    public int getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
     public String getUsername() {
         return username;
@@ -90,4 +80,3 @@ public class User {
         this.reminders = reminders;
     }
 }
-
