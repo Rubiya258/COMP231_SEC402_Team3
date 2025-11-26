@@ -1,15 +1,14 @@
 package mytask.service;
-import mytask.repository.*;
-import mytask.entity.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import mytask.entity.User;
+import mytask.repository.UserRepository;
 
 @Service
 public class UserService {
-
-    @Autowired
+	@Autowired
     private UserRepository userRepository;
 
     public String registerUser(User user) {
@@ -35,11 +34,5 @@ public class UserService {
         } else {
             return "User not found!";
         }
-    }
-    
-    
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
