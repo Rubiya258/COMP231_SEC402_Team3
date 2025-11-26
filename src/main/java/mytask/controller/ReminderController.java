@@ -1,66 +1,78 @@
 package mytask.controller;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import mytask.service.NotificationService;
-
 import mytask.entity.Reminder;
-import mytask.service.ReminderService;
-import mytask.service.NotificationService;
+import mytask.entity.User;
+import mytask.repository.ReminderRepository;
+import mytask.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/reminders")
 @CrossOrigin(origins = "*")
 public class ReminderController {
-	@Autowired
-    private ReminderService reminderService;
+
+    @Autowired
+    private ReminderRepository reminderRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/add")
-    public Reminder createReminder(@RequestBody Reminder reminder) {
-        return reminderService.saveReminder(reminder);
+    public Reminder createReminder(@RequestBody Map<String, Object> body) {
+
+        Number userIdNum = (Number) body.get("user_id");
+        int userId = userIdNum.intValue();
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Reminder reminder = new Reminder();
+        reminder.setUser(user);
+        reminder.setTitle((String) body.get("title"));
+        reminder.setDescription((String) body.get("description"));
+
+        String time = (String) body.get("notificationTime");
+        if (time != null && !time.isEmpty()) {
+            reminder.setNotificationTime(LocalDateTime.parse(time));
+        }
+
+        Boolean completed = (Boolean) body.get("completed");
+        reminder.setCompleted(completed != null && completed);
+
+        return reminderRepository.save(reminder);
     }
 
-    @GetMapping("/all")
-    public List<Reminder> getAllReminders() {
-        return reminderService.getAllReminders();
+    @GetMapping("/user/{userId}")
+    public List<Reminder> getRemindersByUser(@PathVariable int userId) {
+        return reminderRepository.findByUser_UserId(userId);
     }
 
-	/*@GetMapping("/{id}")
-    public ResponseEntity<Reminder> getReminderById(@PathVariable int id) {
-        Optional<Reminder> reminder = reminderService.getReminderById(id);
-        return reminder.map(ResponseEntity::ok)
-                       .orElseGet(() -> ResponseEntity.notFound().build());*/
+    @GetMapping("/get/{id}")
+    public Reminder getById(@PathVariable int id) {
+        return reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
+    }
 
-   
     @PutMapping("/update/{id}")
-    public Reminder updateReminder(@PathVariable int id, @RequestBody Reminder reminder) {
-        return reminderService.updateReminder(id, reminder);
+    public Reminder updateReminder(@PathVariable int id, @RequestBody Reminder updated) {
+        Reminder existing = reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
+
+        existing.setTitle(updated.getTitle());
+        existing.setDescription(updated.getDescription());
+        existing.setNotificationTime(updated.getNotificationTime());
+        existing.setCompleted(updated.isCompleted());
+
+        return reminderRepository.save(existing);
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteReminder(@PathVariable int id) {
-        reminderService.deleteReminder(id);
-        return "Reminder deleted successfully!";
-    }
-    
-    @Autowired
-    private NotificationService notificationService;
-
-    @GetMapping("/run-notifications")
-    public String runNotificationsNow() {
-        int processed = notificationService.runDueReminderCycle();
-        return "Processed " + processed + " due reminders.";
+        reminderRepository.deleteById(id);
+        return "Deleted";
     }
 }
