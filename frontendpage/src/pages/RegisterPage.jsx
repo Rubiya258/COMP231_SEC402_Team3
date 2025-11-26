@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { API } from "../services/api.js";
 import "../styles/form.css";
-
+import logo from "../assets/logo.svg";
+import loginImage from "../assets/login.jpg";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -59,6 +60,10 @@ export default function RegisterPage() {
 
   return (
     <div className="form-container">
+
+       <img src={logo} alt="Logo" className="app-logo" />
+      <img src={loginImage} alt="Register Illustration" className="page-illustration" />
+
       <h2>Register</h2>
 
       <input
