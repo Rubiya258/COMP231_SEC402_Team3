@@ -1,7 +1,7 @@
 package mytask.entity;
 
 import java.time.LocalDateTime;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,8 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 @Entity
 @Table(name = "reminders")
 public class Reminder {
@@ -23,7 +21,7 @@ public class Reminder {
 
 	    @ManyToOne
 	    @JoinColumn(name = "user_id", nullable = false)
-		@JsonBackReference
+	    @JsonIgnore 
 	    private User user;
 
 	    @NotBlank
@@ -31,10 +29,11 @@ public class Reminder {
 
 	    private String description;
 
-	    @Column(name = "reminder_time")
+	    
+	    @Column(name = "notification_time")
 	    private LocalDateTime notificationTime;
 
-	    @Column(name = "completed")
+	    @Column(name = "is_completed", nullable = false)
 	    private boolean completed = false;
 
 	    // Getters and Setters
