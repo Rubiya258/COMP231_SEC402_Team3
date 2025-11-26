@@ -12,5 +12,5 @@ import mytask.entity.User;
 @Repository
 public interface ReminderRepository extends JpaRepository<Reminder, Integer> {
 	List<Reminder> findAllByNotificationTimeBeforeAndCompletedFalse(LocalDateTime time);
-
+	List<Reminder> findByUser_UserId(int userId);
 }
