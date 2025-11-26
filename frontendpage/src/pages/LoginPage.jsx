@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API } from "../services/api.js";
 import "../styles/form.css";
-
+import logo from "../assets/logo.svg";
+import loginImage from "../assets/login.jpg";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -39,6 +40,10 @@ export default function LoginPage() {
 
   return (
     <div className="form-container">
+
+       <img src={logo} alt="Logo" className="app-logo" />
+      <img src={loginImage} alt="Login Illustration" className="page-illustration" />
+
       <h2>Login</h2>
 
       <input
