@@ -2,17 +2,16 @@ package mytask.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import mytask.entity.Reminder;
 import mytask.entity.User;
 import mytask.repository.ReminderRepository;
 
 @Service
 public class ReminderService {
-	@Autowired
+
+    @Autowired
     private ReminderRepository reminderRepository;
 
     public Reminder saveReminder(Reminder reminder) {
@@ -23,12 +22,15 @@ public class ReminderService {
         return reminderRepository.findAll();
     }
 
-    public Reminder updateReminder(int id, Reminder reminder) {
-        Reminder existing = reminderRepository.findById(id).orElseThrow();
-        existing.setTitle(reminder.getTitle());
-        existing.setDescription(reminder.getDescription());
-        existing.setNotificationTime(reminder.getNotificationTime());
-        existing.setCompleted(reminder.isCompleted());
+    public Reminder update(int id, Reminder updated) {
+        Reminder existing = reminderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reminder not found"));
+
+        existing.setTitle(updated.getTitle());
+        existing.setDescription(updated.getDescription());
+        existing.setNotificationTime(updated.getNotificationTime());
+        existing.setCompleted(updated.isCompleted());
+
         return reminderRepository.save(existing);
     }
 
