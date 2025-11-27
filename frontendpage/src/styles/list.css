@@ -21,12 +21,14 @@
 
 /* Card Style */
 .reminder-card {
+  position: relative;
   background: white;
   padding: 20px;
   border-radius: 14px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   text-align: left;
   transition: transform 0.15s ease, box-shadow 0.2s ease;
+  overflow: visible;
 }
 
 .reminder-card:hover {
@@ -74,14 +76,19 @@
 .delete-btn:hover {
   background-color: #dc2626;
 }
+
 .popup {
+  position: absolute; 
+  top: 100%;          
+  left: 0;            
   background: white;
   padding: 1.5rem 2rem;
   border-radius: 8px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-  width: 795px;
-  margin-top: 15px;
+  width: 420px; 
+  margin-top: 10px;
   z-index: 1000;
+  box-sizing: border-box;
 }
 
 .popup label {
