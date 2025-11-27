@@ -39,11 +39,11 @@ export default function ReminderListPage() {
 
   useEffect(() => {
     loadReminders();
-  }, []);
+  }, [location.pathname]);
 
   const removeReminder = async (id) => {
     await fetch(REMINDER_API.DELETE(id), { method: "DELETE" });
-    setReminders(prev => prev.filter(r => r.reminderId !== Number(id)));
+    loadReminders(); 
   };
 
  const addNotification = async () => {
