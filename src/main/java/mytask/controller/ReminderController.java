@@ -4,6 +4,9 @@ import mytask.entity.Reminder;
 import mytask.entity.User;
 import mytask.repository.ReminderRepository;
 import mytask.repository.UserRepository;
+import mytask.repository.NotificationRepository;
+
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
 
 @RestController
 @RequestMapping("/api/reminders")
@@ -22,6 +26,9 @@ public class ReminderController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @PostMapping("/add")
     public Reminder createReminder(@RequestBody Map<String, Object> body) {
@@ -72,9 +79,13 @@ public class ReminderController {
         return reminderRepository.save(existing);
     }
 
+    @Transactional
     @DeleteMapping("/delete/{id}")
     public String deleteReminder(@PathVariable int id) {
+
+        notificationRepository.deleteByReminder_ReminderId((long) id);
         reminderRepository.deleteById(id);
+
         return "Deleted";
     }
 

@@ -6,4 +6,5 @@ import mytask.entity.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByReminder_ReminderId(Long reminderId);
+    void deleteByReminder_ReminderId(Long reminderId);
 }
