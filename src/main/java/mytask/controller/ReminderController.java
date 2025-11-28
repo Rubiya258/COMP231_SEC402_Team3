@@ -4,8 +4,10 @@ import mytask.entity.Reminder;
 import mytask.entity.User;
 import mytask.repository.ReminderRepository;
 import mytask.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -75,4 +77,19 @@ public class ReminderController {
         reminderRepository.deleteById(id);
         return "Deleted";
     }
+
+    // For popup notifications
+    
+    @GetMapping("/due")
+    public List<Reminder> getDueReminders() {
+        LocalDateTime now = LocalDateTime.now();
+        return reminderRepository.findAllByNotificationTimeBeforeAndCompletedFalse(now);
+    }
+    
+    @GetMapping("/overdue/{userId}")
+    public List<Reminder> getOverdueReminders(@PathVariable int userId) {
+        LocalDateTime now = LocalDateTime.now();
+        return reminderRepository.findByUser_UserIdAndNotificationTimeBeforeAndCompletedFalse(userId, now);
+    }
+
 }
