@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8088";
+const BASE_URL = "http://localhost:8080";
 
 export const API = {
   REGISTER: `${BASE_URL}/api/users/register`,
